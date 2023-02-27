@@ -12,7 +12,7 @@ services:
       context: src/pixelKube/
       dockerfile : Dockerfile
     ports:
-      - 3000:8000
+      - 3000:3000
     environment:
       - SMS_API_BASE_ENDPOINT=api-app:3002
     networks:
