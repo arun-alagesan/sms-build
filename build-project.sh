@@ -1,6 +1,7 @@
 set -o allexport
 source .env
 set +o allexport
+DETACHED_MODE=$1
 
 bash ./checkout-code.sh
 
@@ -12,7 +13,7 @@ docker compose build
 
 echo 'spinning up the containers'
 sleep 3
-docker compose up
+docker compose up $DETACHED_MODE
 
 sleep 2
 
