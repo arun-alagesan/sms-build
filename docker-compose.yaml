@@ -56,6 +56,32 @@ services:
       - sms-pgdata:/var/lib/postgresql/data
     networks:
       - sms-network
+  identity:
+    container_name: keycloak-server
+    image: "${DOCKER_ID}pixelkube-keycloak-server"
+    build :
+      context: identity-server/
+      dockerfile: Dockerfile
+    ports:
+      - 8088:8080
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - DB_VENDOR=POSTGRES
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=sms-db
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_SCHEMA=public
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=67X09Zx
+      - KC_FEATURES=step-up-authentication
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HTTP_ENABLED=true
+    networks:
+      - sms-network
+    depends_on:
+      - sms-db
       
 volumes:
   sms-pgdata:
