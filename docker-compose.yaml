@@ -5,6 +5,20 @@ networks:
     driver: bridge
 
 services:
+  proxy-app :
+    container_name: proxy-app
+    image: ${DOCKER_ID}pixelkube-proxy
+    build:
+      context: proxy-server/
+      dockerfile : Dockerfile
+    ports:
+      - 8088:80
+      - 443:443
+    networks:
+      - sms-network
+    depends_on:
+      - ui-app
+      - api-app
   ui-app :
     container_name: ui-app
     image: ${DOCKER_ID}pixelkube-ui
@@ -56,6 +70,7 @@ services:
       - sms-pgdata:/var/lib/postgresql/data
     networks:
       - sms-network
+  
       
 volumes:
   sms-pgdata:
