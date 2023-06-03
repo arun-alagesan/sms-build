@@ -12,7 +12,7 @@ services:
       context: proxy-server/
       dockerfile : Dockerfile
     ports:
-      - 8088:80
+      - 80:80
       - 443:443
     networks:
       - sms-network
@@ -25,8 +25,7 @@ services:
     build:
       context: src/pixelKube/
       dockerfile : Dockerfile
-    ports:
-      - 3000:80
+    
     environment:
       - SMS_API_BASE_ENDPOINT=api-app:3002
     networks:
@@ -37,8 +36,7 @@ services:
     build:
       context: src/sms-spacemgmt-ms/
       dockerfile : Dockerfile
-    ports:
-      - 3001:80
+    
     environment:
       - conectionstring=Host=sms-db:5432; Database=${POSTGRES_DB}; Username=postgres;Password=${POSTGRES_PASSWORD}
     networks:
@@ -49,8 +47,7 @@ services:
     build:
       context: src/CalendarService/
       dockerfile : Dockerfile
-    ports:
-      - 3002:80
+    
     environment:
       - conectionstring=Host=sms-db:5432; Database=${POSTGRES_DB}; Username=postgres;Password=${POSTGRES_PASSWORD}
     networks:
