@@ -72,12 +72,10 @@ services:
       - KC_DB_URL_HOST=sms-db
       - KC_DB_URL_DATABASE=keycloak
       - KC_DB_SCHEMA=public
-      - KC_DB_USERNAME=postgres
-      - KC_DB_PASSWORD=67X09Zx
+      - KC_DB_USERNAME=${POSTGRES_USER}
+      - KC_DB_PASSWORD=${POSTGRES_PASSWORD}
       - KC_FEATURES=step-up-authentication
-      - KC_HOSTNAME_STRICT=false
-      - KC_HOSTNAME_STRICT_HTTPS=false
-      - KC_HTTP_ENABLED=true
+
     networks:
       - sms-network
     depends_on:
