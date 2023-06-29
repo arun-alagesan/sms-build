@@ -34,9 +34,21 @@ services:
     image: ${DOCKER_ID}pixelkube-cal-api
     build:
       context: src/CalendarService/
-      dockerfile : Dockerfile
+      dockerfile : Dockerfile_Api
     ports:
       - 3002:80
+    environment:
+      - conectionstring=Host=sms-db:5432; Database=${POSTGRES_DB}; Username=postgres;Password=${POSTGRES_PASSWORD}
+    networks:
+      - sms-network
+  cal-background-app:
+    container_name: cal-background-app
+    image: ${DOCKER_ID}pixelkube-cal-background
+    build:
+      context: src/CalendarService/
+      dockerfile : Dockerfile_Background
+    ports:
+      - 3003:80
     environment:
       - conectionstring=Host=sms-db:5432; Database=${POSTGRES_DB}; Username=postgres;Password=${POSTGRES_PASSWORD}
     networks:
@@ -48,12 +60,12 @@ services:
       context: src/sms-spacemgmt-ms/docker-database/
       dockerfile: Dockerfile
     ports:
-      - 5436:5432
+      - 5432:5432
     environment:
       - POSTGRES_DB=pixelkube 
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - sms-pgdata:/var/lib/postgresql/data
+      - sms-pgdata:${PGDATA}
     networks:
       - sms-network
   identity:
@@ -63,7 +75,7 @@ services:
       context: identity-server/
       dockerfile: Dockerfile
     ports:
-      - 8088:8080
+      - 8080:8080
     environment:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
@@ -74,8 +86,8 @@ services:
       - KC_DB_SCHEMA=public
       - KC_DB_USERNAME=${POSTGRES_USER}
       - KC_DB_PASSWORD=${POSTGRES_PASSWORD}
-      - KC_FEATURES=step-up-authentication
-
+      - KC_DB_URL_PORT=5432
+      - KC_HOSTNAME=demo.pixelkube.io
     networks:
       - sms-network
     depends_on:

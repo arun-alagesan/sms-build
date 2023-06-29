@@ -8,5 +8,5 @@ FROM quay.io/keycloak/keycloak:latest
 COPY --from=builder /opt/keycloak/lib/quarkus/ /opt/keycloak/lib/quarkus/
 #COPY --from=builder /opt/keycloak/conf/cache-ispn-jdbc-ping.xml /opt/keycloak/conf
 WORKDIR /opt/keycloak
-CMD [ "start-dev" ]
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+ENV KC_HOSTNAME=localhost
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start --proxy=edge" ]
