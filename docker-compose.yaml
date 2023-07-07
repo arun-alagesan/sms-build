@@ -34,21 +34,9 @@ services:
     image: ${DOCKER_ID}pixelkube-cal-api
     build:
       context: src/CalendarService/
-      dockerfile : Dockerfile_Api
+      dockerfile : Dockerfile
     ports:
       - 3002:80
-    environment:
-      - conectionstring=Host=sms-db:5432; Database=${POSTGRES_DB}; Username=postgres;Password=${POSTGRES_PASSWORD}
-    networks:
-      - sms-network
-  cal-background-app:
-    container_name: cal-background-app
-    image: ${DOCKER_ID}pixelkube-cal-background
-    build:
-      context: src/CalendarService/
-      dockerfile : Dockerfile_Background
-    ports:
-      - 3003:80
     environment:
       - conectionstring=Host=sms-db:5432; Database=${POSTGRES_DB}; Username=postgres;Password=${POSTGRES_PASSWORD}
     networks:
@@ -60,7 +48,7 @@ services:
       context: src/sms-spacemgmt-ms/docker-database/
       dockerfile: Dockerfile
     ports:
-      - 5432:5432
+      - 5436:5432
     environment:
       - POSTGRES_DB=pixelkube 
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -87,7 +75,7 @@ services:
       - KC_DB_USERNAME=${POSTGRES_USER}
       - KC_DB_PASSWORD=${POSTGRES_PASSWORD}
       - KC_DB_URL_PORT=5432
-      - KC_HOSTNAME=demo.pixelkube.io
+      - KC_HOSTNAME=localhost
     networks:
       - sms-network
     depends_on:
